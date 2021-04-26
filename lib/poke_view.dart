@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pokemon/poke_controller.dart';
@@ -37,21 +35,12 @@ class _PokeViewState extends State<PokeView> {
                     );
                   }
                   if (snapshot.hasData) {
-                    return Container(
-                      margin: EdgeInsets.all(10),
-                      padding: EdgeInsets.all(10),
-                      height: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.blue[200],
-                            Colors.blue[300],
-                            Colors.blue[600]
-                          ],
-                        ),
+                    return Stack(children: [
+                      Opacity(
+                        opacity: 0.2,
+                        child: Image.asset('images/pokeball.png'),
                       ),
-                      child: Column(
+                      Column(
                         children: [
                           Align(
                             alignment: Alignment.centerLeft,
@@ -59,12 +48,13 @@ class _PokeViewState extends State<PokeView> {
                               'Central Kalos Pokedex',
                               style: TextStyle(
                                   fontSize: 20,
-                                  color: Colors.blue[900],
+                                  color: Colors.white,
                                   fontWeight: FontWeight.w600),
                             ),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Image.network(
                                 snapshot.data.photo,
@@ -110,6 +100,35 @@ class _PokeViewState extends State<PokeView> {
                                       color: Colors.white54,
                                       thickness: 1,
                                     ),
+                                    Text(
+                                      'Habilidades',
+                                      style: TextStyle(
+                                          decorationThickness: 3,
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(3),
+                                      ),
+                                      height: 100,
+                                      width: 260,
+                                      child: ListView.builder(
+                                        itemCount:
+                                            snapshot.data.abilities.length,
+                                        itemBuilder: (context, index) {
+                                          return Text(
+                                            snapshot.data.abilities[index].name,
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600),
+                                          );
+                                        },
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),
@@ -117,7 +136,7 @@ class _PokeViewState extends State<PokeView> {
                           ),
                         ],
                       ),
-                    );
+                    ]);
                   } else if (snapshot.hasError) {
                     return Text(
                       snapshot.error,
@@ -127,7 +146,7 @@ class _PokeViewState extends State<PokeView> {
               ),
               Column(
                 children: [
-                  OutlinedButton(
+                  TextButton(
                     onPressed: () {
                       setState(() {
                         controller.loadPokemon();
@@ -163,44 +182,14 @@ class CustomRow extends StatelessWidget {
         Text(
           dado,
           style: TextStyle(
-              fontSize: 20,
-              color: Colors.blue[900],
-              fontWeight: FontWeight.w600),
+              fontSize: 20, color: Colors.white, fontWeight: FontWeight.w600),
         ),
         Text(
           status,
           style: TextStyle(
-              fontSize: 20,
-              color: Colors.blue[900],
-              fontWeight: FontWeight.w600),
+              fontSize: 20, color: Colors.white, fontWeight: FontWeight.w600),
         ),
       ],
     );
-  }
-}
-
-class RPSCustomPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint_0 = new Paint()
-      ..color = Color.fromARGB(255, 33, 150, 243)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 10.53;
-
-    Path path_0 = Path();
-    path_0.moveTo(size.width * 0.0008333, size.height * 0.4985714);
-    path_0.quadraticBezierTo(size.width * 0.0008333, size.height * 0.4932143,
-        size.width * 0.0008333, size.height * 0.4914286);
-    path_0.quadraticBezierTo(size.width * -0.0095833, size.height * 0.2078571,
-        size.width * 0.1191667, size.height * 0.2200000);
-    path_0.lineTo(size.width * 0.1141667, size.height * 0.2214286);
-    path_0.lineTo(size.width * 0.5058333, size.height * 0.2142857);
-
-    canvas.drawPath(path_0, paint_0);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
   }
 }
