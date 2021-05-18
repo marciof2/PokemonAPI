@@ -9,7 +9,7 @@ class PokeView extends StatefulWidget {
 }
 
 class _PokeViewState extends State<PokeView> {
-  final controller = PokeController();
+  final viewModel = PokeViewModel();
   MainAxisAlignment alignment = MainAxisAlignment.spaceBetween;
 
   @override
@@ -21,10 +21,11 @@ class _PokeViewState extends State<PokeView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FutureBuilder<Pokemon>(
-                future: controller.pokemon,
+              StreamBuilder<Pokemon>(
+                stream: viewModel.streamController.stream,
+                // ignore: missing_return
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done) {
+                  if (snapshot.connectionState != ConnectionState.active) {
                     return Container(
                       margin: EdgeInsets.all(10),
                       height: 150,
@@ -149,7 +150,7 @@ class _PokeViewState extends State<PokeView> {
                   TextButton(
                     onPressed: () {
                       setState(() {
-                        controller.loadPokemon();
+                        viewModel.loadPokemon();
                       });
                     },
                     child: Text(
@@ -172,6 +173,7 @@ class CustomRow extends StatelessWidget {
   final String dado;
   final linha;
 
+  // ignore: non_constant_identifier_names
   CustomRow(this.status, this.dado, {Key, key, this.linha}) : super(key: key);
 
   @override

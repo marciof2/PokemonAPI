@@ -6,7 +6,7 @@ import 'package:pokemon/pokemon.dart';
 
 class API {
   // ignore: missing_return
-  Future<Pokemon> fetchPokemon() async {
+  fetchPokemon() async {
     final response = await http.get(
         Uri.https('pokeapi.co', '/api/v2/pokemon/${Random().nextInt(1000)}'));
 

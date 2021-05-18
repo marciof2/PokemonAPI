@@ -1,12 +1,14 @@
+import 'dart:async';
 import 'package:pokemon/poke_model.dart';
 import 'package:pokemon/pokemon.dart';
 
-class PokeController {
+class PokeViewModel {
   final model = PokeModel();
 
-  Future<Pokemon> get pokemon => model.pokemon;
+  StreamController<Pokemon> streamController = StreamController();
 
-  loadPokemon() {
+  void loadPokemon() {
     model.fetchPokemon();
+    model.pokemon.then((value) => {streamController.add(value)});
   }
 }
